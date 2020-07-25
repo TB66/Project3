@@ -65,23 +65,13 @@ public class Demo3 {
 				}
 			}
 		};
-		Thread t4=new Thread("==线程4") {
-			@Override
-			public void run() {
-				while (true) {
-					if(d.size()>0) {
-						System.out.println(Thread.currentThread()+":"+d.pop());
-					}
-					
-				}
-			}
-		};
+		
 		
 		
 		t1.start();
 		t2.start();
 		t3.start();
-		t4.start();
+		
 		
 		
 	}
