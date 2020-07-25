@@ -21,5 +21,25 @@ Windows是一个多进程多线程的系统.
 构造方法								说明
 Thread()							创建-个新的线程
 Thread(String name)					创建-一个指定名称的线程
-Thread(Runnable target)				利用Runnable对象创建一个线程， 启动时将执行该对象的nun方法			
+Thread(Runnable target)				利用Runnable对象创建一个线程， 启动时将执行该对象的run方法			
 Thread(Runnable target, String name)利用Runnable对象创建一个线程， 并指定该线程的名称
+
+
+线程实现方式:
+1.继承Thread类==>重写run方法
+2.实现Runnable 接口==>必须借助Thread对象,实现线程.
+run() start() 区别:
+run(): 执行业务,同步方式执行
+start() :启动线程执行run方法
+属性: id, name, state (状态), priority (1~10 默认5)
+方法yield, join, sleep, start..
+
+
+
+
+
+
+
+
+
+
