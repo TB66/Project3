@@ -46,7 +46,7 @@ public class Demo {
 		// 获取文件大小
 		int filesize = conn.getContentLength();
 		// 定义每块的大小
-		int blocksize = 6 * 1024 * 1024;
+		int blocksize = 4 * 1024 * 1024;
 		// 计算块数
 		int blocknums = filesize / blocksize;
 		if (filesize % blocksize != 0) {
@@ -56,6 +56,13 @@ public class Demo {
 
 		for (int i = 0; i < blocknums; i++) {
 			downNums++;
+			synchronized (this) {
+				while(downNums>10) {
+					System.out.println("下载块已到达10");
+					wait();
+				}
+			}
+			
 			int index = i;
 
 			new Thread() {
