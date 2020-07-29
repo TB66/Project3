@@ -5,9 +5,11 @@ import java.util.Map;
 
 public class HttpServletRequest extends HttpServlet {
 	Map<String, String> headerMap = new HashMap<String, String>();
+	Map<String, String> params = new HashMap<String, String>();
 	String method;
 	String requestUri;
 	String protocol;
+	String parameter;
 
 	public HttpServletRequest() {
 
@@ -19,7 +21,17 @@ public class HttpServletRequest extends HttpServlet {
 		String[] lines = requestText.split("\\n");
 		String[] items = lines[0].split("\\s");
 		method = items[0];
-		requestUri = items[1];
+
+		String[] uri = items[1].split("\\u003F");
+		requestUri = uri[0];
+		if (uri.length > 1) {
+			String[] parameters = uri[1].split("&");
+			for (int i = 0; i < parameters.length; i++) {
+				String[] parameter = parameters[i].split("=");
+				params.put(parameter[0], parameter[1]);
+			}
+		}
+
 		protocol = items[2];
 
 		for (int i = 1; i < lines.length; i++) {
@@ -56,7 +68,7 @@ public class HttpServletRequest extends HttpServlet {
 
 	// 获取请求参数
 	public String getParameter(String name) {
-		return null;
+		return params.get(name);
 	}
 
 	// 获取cookie

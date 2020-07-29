@@ -6,10 +6,13 @@ public class HelloServlet extends HttpServlet {
 
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) {
-		System.out.println("Hello World");
-		PrintWriter out=response.getWriter();
-		out.print("<h1>hello world!</h1>");
-		
+		String name = request.getParameter("name");
+		PrintWriter out = response.getWriter();
+		if (name != null) {
+			out.print("<h1>hello " + name + "!</h1>");
+		} else {
+			out.print("<h1>please login!</h1>");
+		}
 	}
 
 }
