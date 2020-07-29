@@ -16,6 +16,7 @@ public class Tomcat {
 		// 服务器初始化Servlet容器==> Map集合==> URL :Servlet对象
 
 		servletMap = new HashMap<>();
+		servletMap.put("/hello", new HelloServlet());
 		// 启动服务监听8080端口
 		// 循环生成socket对象
 		// 使用线程处理浏览器发送的请求
@@ -42,59 +43,56 @@ public class Tomcat {
 							// 解析请求报文
 
 							HttpServletRequest request = buildRequest(requestText);
+							HttpServletResponse response = null;
+
 							// 使用资源地址区分动态请求和静态请求
 							// 使用资源地址到Servlet容器中获取Servlet对象
 
 							String uri = request.getRequestURI();
 							Servlet servlet = servletMap.get(uri);
+
 							if (servlet != null) {
 								// 使用Servlet 处理动态请求
+
+								servlet.service(request, response);
 
 							} else {
 								// 如果没有找到对应的Servlet对象，那么将其视为静态请求
 								// 处理静态请求
 								// 判断资源是否存在，如果不存在返回404
-								String webpath=request.getRequestURI();
+								String webpath = request.getRequestURI();
 								String contentType;
-								int statusCode=200;
-								String path = "C:/test/photo/"+webpath;
-								
-								
-								File file=new File(path);
-								if(!file.exists()) {
-									statusCode=404;
-									path="C:/test/photo/404.html";
+								int statusCode = 200;
+								String path = "C:/test/photo/" + webpath;
+
+								File file = new File(path);
+								if (!file.exists()) {
+									statusCode = 404;
+									path = "C:/test/photo/404.html";
 								}
-								if(webpath.endsWith(".js")) {
-									contentType="application/javascript" ;
-											
-								}else if(webpath.endsWith(".css")) {
-									contentType="text/css";
-								}else {
-									contentType="text/html";
+								if (webpath.endsWith(".js")) {
+									contentType = "application/javascript";
+
+								} else if (webpath.endsWith(".css")) {
+									contentType = "text/css";
+								} else {
+									contentType = "text/html";
 								}
 								// 响应头行
-								out.write(("HTTP/1.1 "+statusCode+" OK\n").getBytes());
+								out.write(("HTTP/1.1 " + statusCode + " OK\n").getBytes());
 								// 响应头域
-								out.write(("Content-Type: "+contentType+"; charset=utf-8\n").getBytes());
+								out.write(("Content-Type: " + contentType + "; charset=utf-8\n").getBytes());
 								// 空行
 								out.write("\n".getBytes());
 								// 实体
 								// out.write("<h1>Hello World</h1>".getBytes());
-								
+
 								FileInputStream fis = new FileInputStream(path);
-								while ((count =fis.read(buffer)) > 0) {
+								while ((count = fis.read(buffer)) > 0) {
 									out.write(buffer, 0, count);
 								}
 								fis.close();
-								
-								
-								
-								
-								
-								
-								
-								
+
 							}
 
 						}
@@ -104,8 +102,6 @@ public class Tomcat {
 					}
 
 				}
-
-				
 
 			}.start();
 		}
@@ -122,7 +118,7 @@ public class Tomcat {
 	private HttpServletRequest buildRequest(String requestText) {
 		return new HttpServletRequest(requestText);
 	}
-	
+
 	public static void main(String[] args) throws IOException {
 		new Tomcat().startup();
 	}
