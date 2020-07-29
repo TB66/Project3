@@ -1,7 +1,9 @@
 package com.s3.https.d0729;
 
+import java.io.IOException;
+
 public class HttpServlet implements Servlet {
-	public void service(HttpServletRequest request, HttpServletResponse response) {
+	public void service(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 		if ("GET".equals(request.getMethod())) {
 			doGet(request, response);
@@ -12,6 +14,8 @@ public class HttpServlet implements Servlet {
 		} else {
 
 		}
+		response.setStatus(200, "OK");
+		response.flushBuffer();
 
 	}
 

@@ -43,7 +43,7 @@ public class Tomcat {
 							// 解析请求报文
 
 							HttpServletRequest request = buildRequest(requestText);
-							HttpServletResponse response = null;
+							HttpServletResponse response = new HttpServletResponse(out);
 
 							// 使用资源地址区分动态请求和静态请求
 							// 使用资源地址到Servlet容器中获取Servlet对象
