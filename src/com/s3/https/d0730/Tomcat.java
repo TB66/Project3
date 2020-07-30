@@ -20,6 +20,7 @@ public class Tomcat {
 		servletMap.put("/", new ToIndexServlet());
 		servletMap.put("/cookie", new CookieServlet());
 		servletMap.put("/login.jsp", new LoginPageServlet());
+		servletMap.put("/post.do", new PostServlet());
 		// 启动服务监听8080端口
 		// 循环生成socket对象
 		// 使用线程处理浏览器发送的请求
