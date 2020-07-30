@@ -1,5 +1,7 @@
 package com.s3.https.d0730;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,7 +11,6 @@ public class HttpServletRequest extends HttpServlet {
 	String method;
 	String requestUri;
 	String protocol;
-	
 
 	public HttpServletRequest() {
 
@@ -28,7 +29,11 @@ public class HttpServletRequest extends HttpServlet {
 			String[] parameters = uri[1].split("&");
 			for (int i = 0; i < parameters.length; i++) {
 				String[] parameter = parameters[i].split("=");
-				params.put(parameter[0], parameter[1]);
+				if (parameter.length == 1) {
+					params.put(parameter[0], "");
+				} else if (parameter.length > 1) {
+					params.put(parameter[0], parameter[1]);
+				}
 			}
 		}
 
@@ -68,6 +73,14 @@ public class HttpServletRequest extends HttpServlet {
 
 	// 获取请求参数
 	public String getParameter(String name) {
+		if (params.get(name).indexOf("%") > -1) {
+			try {
+				new URLDecoder();
+				return URLDecoder.decode(params.get(name), "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+		}
 		return params.get(name);
 	}
 
