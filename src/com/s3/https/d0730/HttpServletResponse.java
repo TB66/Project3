@@ -4,7 +4,10 @@ import java.io.CharArrayWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -15,6 +18,7 @@ public class HttpServletResponse {
 	private CharArrayWriter caw = new CharArrayWriter();
 	private PrintWriter pw = new PrintWriter(caw);
 	private Map<String, String> headerMap = new HashMap<>();
+	private List<Cookie> cookieList = new ArrayList<>();
 
 	public HttpServletResponse(OutputStream out) {
 		this.out = out;
@@ -47,6 +51,12 @@ public class HttpServletResponse {
 		for (Entry<String, String> entry : headerMap.entrySet()) {
 			out.write((entry.getKey() + ": " + entry.getValue() + "\n").getBytes());
 		}
+
+		// 添加cookie
+		for (Iterator<Cookie> iterator = cookieList.iterator(); iterator.hasNext();) {
+			Cookie cookie = iterator.next();
+			out.write(cookie.toString().getBytes());
+		}
 		// 空行
 		out.write("\n".getBytes());
 		// 实体
@@ -61,6 +71,11 @@ public class HttpServletResponse {
 		setStatus(301, "Redirect");
 		// 头域中写入Location跳转的地址
 		headerMap.put("Location", uri);
+	}
+
+	public void addCooike(Cookie cookie) {
+		cookieList.add(cookie);
+
 	}
 
 }

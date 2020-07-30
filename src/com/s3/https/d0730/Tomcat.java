@@ -18,6 +18,8 @@ public class Tomcat {
 		servletMap = new HashMap<>();
 		servletMap.put("/hello", new HelloServlet());
 		servletMap.put("/", new ToIndexServlet());
+		servletMap.put("/cookie", new CookieServlet());
+		servletMap.put("/login.jsp", new LoginPageServlet());
 		// 启动服务监听8080端口
 		// 循环生成socket对象
 		// 使用线程处理浏览器发送的请求

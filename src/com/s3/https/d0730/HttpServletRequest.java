@@ -2,7 +2,9 @@ package com.s3.https.d0730;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class HttpServletRequest extends HttpServlet {
@@ -86,7 +88,18 @@ public class HttpServletRequest extends HttpServlet {
 
 	// 获取cookie
 	public Cookie[] getCookies() {
-		return null;
+		String cookieStr = headerMap.get("Cookie");
+		if (cookieStr == null) {
+			return null;
+		} else {
+			List<Cookie> cookieList = new ArrayList<Cookie>();
+			String[] strCookie = cookieStr.split(";\\s*");
+			for (int i = 0; i < strCookie.length; i++) {
+				String[] nv = strCookie[i].split("=");
+				cookieList.add(new Cookie(nv[0], nv[1]));
+			}
+			return cookieList.toArray(new Cookie[0]);
+		}
 	}
 
 }
