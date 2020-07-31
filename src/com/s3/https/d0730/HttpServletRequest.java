@@ -75,17 +75,28 @@ public class HttpServletRequest extends HttpServlet {
 
 	// 获取请求参数
 	public String getParameter(String name) {
-		if (params.get(name).indexOf("%") > -1) {
-			try {
-				new URLDecoder();
-				return URLDecoder.decode(params.get(name), "UTF-8");
-			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
-			}
+		String result=getGetParameter(name);
+		if(result!=null) {
+			return result;
 		}
-		return params.get(name);
+		return null;
+		
+		
 	}
-
+	private String getGetParameter(String name) {
+		if(params.get(name)!=null) {
+			if (params.get(name).indexOf("%") > -1) {
+				try {
+					new URLDecoder();
+					return URLDecoder.decode(params.get(name), "UTF-8");
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				}
+			}
+			return params.get(name);
+		}
+		return null;
+	}
 	// 获取cookie
 	public Cookie[] getCookies() {
 		String cookieStr = headerMap.get("Cookie");
